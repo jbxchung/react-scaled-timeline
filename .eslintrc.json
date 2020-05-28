@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "airbnb"
+  ],
+  "rules": {
+    "prefer-destructuring": "off",
+    "spaced-comment": "error",
+    "func-names": "off",
+    "linebreak-style": "off",
+    "react/destructuring-assignment": "off",
+    "react/prefer-stateless-function": ["off", { "ignorePureComponents": true }],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"]}],
+    "jsx-a11y/anchor-is-valid": [ "error", { "components": ["Link"], "specialLink": ["to"]}],
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "react/forbid-prop-types": "off",
+    "react/no-did-update-set-state": "off",
+    "react/no-did-mount-set-state": "off",
+    "class-methods-use-this": ["off"],
+    "no-console": "off",
+    "no-case-declarations": "off",
+    "no-underscore-dangle": ["off"],
+    "no-alert": ["off"],
+    "no-debugger": "off",
+    "no-bitwise": ["error", { "allow": ["<<", "&=", "|"], "int32Hint": true }],
+    "max-len": ["error", { "code": 500 }]
+  },
+  "globals": {
+    "document": true,
+    "fetch": true
+  },
+  "ignorePatterns": ["build"],
+  "env": {
+    "browser": true,
+    "jest": true
+  }
+}
