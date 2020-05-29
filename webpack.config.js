@@ -37,31 +37,6 @@ module.exports = {
           require.resolve('sass-loader'),
         ],
       },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'images',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'react-svg-loader',
-            options: {
-              jsx: true,
-            },
-          },
-        ],
-      },
     ],
   },
   resolve: { extensions: ['*', '.js', '.jsx'] },

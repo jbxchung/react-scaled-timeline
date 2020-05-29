@@ -1,0 +1,44 @@
+$default-length: 45rem;
+$default-width: 1.5rem;
+
+.scaled-timeline-container {
+  display: flex;
+
+  &.vertical {
+    flex-direction: column-reverse;
+    height: $default-length;
+    width: $default-width;
+
+    &.reversed {
+      flex-direction: column; 
+    }
+  }
+
+  &.horizontal {
+    flex-direction: row;
+    height: $default-width;
+    width: $default-length;
+
+    &.reversed {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .scaled-timeline {
+    flex: 1;
+
+    display: flex;
+    flex-direction: inherit;
+    border: 1px solid white;
+    
+
+    .scaled-timeline-entry {
+      position: relative;
+
+      .scaled-timeline-entry-details {
+        position: absolute;
+        
+      }
+    }
+  }
+}
