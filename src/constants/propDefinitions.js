@@ -1,8 +1,83 @@
+
+export const entryPosition = {
+  alternate: {
+    id: 'alternate',
+  },
+  left: {
+    id: 'left',
+    offsetProperty: 'right',
+  },
+  right: {
+    id: 'right',
+    offsetProperty: 'left',
+  },
+  top: {
+    id: 'top',
+    offsetProperty: 'bottom',
+  },
+  bottom: {
+    id: 'bottom',
+    offsetProperty: 'top',
+  },
+};
+
 export const orientation = {
-  horizontal: 'horizontal',
-  'horizontal-reversed': 'horizontal reversed',
-  vertical: 'vertical',
-  'vertical-reversed': 'vertical reversed',
+  horizontal: {
+    id: 'horizontal',
+    className: 'horizontal',
+    barProperties: {
+      length: 'width',
+      startPosition: 'left',
+      alignSide1: 'top',
+      alignSide2: 'bottom',
+    },
+    entryPositions: [
+      entryPosition.top,
+      entryPosition.bottom,
+    ],
+  },
+  'horizontal-reversed': {
+    id: 'horizontal-reversed',
+    className: 'horizontal reversed',
+    barProperties: {
+      length: 'width',
+      startPosition: 'right',
+      alignSide1: 'top',
+      alignSide2: 'bottom',
+    },
+    entryPositions: [
+      entryPosition.top,
+      entryPosition.bottom,
+    ],
+  },
+  vertical: {
+    id: 'vertical',
+    className: 'vertical',
+    barProperties: {
+      length: 'height',
+      startPosition: 'bottom',
+      alignSide1: 'left',
+      alignSide2: 'right',
+    },
+    entryPositions: [
+      entryPosition.left,
+      entryPosition.right,
+    ],
+  },
+  'vertical-reversed': {
+    id: 'vertical-reversed',
+    className: 'vertical reversed',
+    barProperties: {
+      length: 'height',
+      startPosition: 'top',
+      alignSide1: 'left',
+      alignSide2: 'right',
+    },
+    entryPositions: [
+      entryPosition.left,
+      entryPosition.right,
+    ],
+  },
 };
 
 export const scaleType = {

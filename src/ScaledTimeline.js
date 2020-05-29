@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import * as propDefinitions from './constants/propDefinitions';
+import * as barUtils from './utils/barUtils';
 
 import './ScaledTimeline.scss';
 import ScaledTimelineEntry from './ScaledTimelineEntry';
@@ -13,16 +14,11 @@ class ScaledTimeline extends Component {
     this.state = {
       className: this.props.className,
       dataEntries: this.preProcess(this.props.timelineData),
-      scaleType: this.props.scaleType,
+      // props.orientation is the key, set state.orientation to the object itself
+      orientation: propDefinitions.orientation[this.props.orientation],
     };
 
-    // todo: handle logarithmic
-    console.log(this.state.scaleType);
-    console.log(this.state.dataEntries);
-
     this.preProcess = this.preProcess.bind(this);
-    this.calculatePosition = this.calculatePosition.bind(this);
-    this.calculateLength = this.calculateLength.bind(this);
   }
 
   hash(str) {
@@ -54,7 +50,7 @@ class ScaledTimeline extends Component {
 
       const entry = {
         data: dataEntry,
-        reactKey: this.hash(JSON.stringify(dataEntry)),
+        renderKey: this.hash(JSON.stringify(dataEntry)),
       };
 
       preProcessedData.push(entry);
@@ -63,54 +59,41 @@ class ScaledTimeline extends Component {
     // calculate the position and length of the bar in percentages, and assign a color
     preProcessedData.forEach((entry, index) => {
       const { start, end } = entry.data.dateRange;
-      // eslint-disable-next-line no-param-reassign
+      /* eslint-disable no-param-reassign */
       entry.barRenderConfig = {
         color: this.props.colorCycle[index % this.props.colorCycle.length],
-        length: this.calculateLength(start, end, timelineStart, timelineEnd),
-        startPosition: this.calculatePosition(start, timelineStart, timelineEnd),
+        length: barUtils.calculateLength(start, end, timelineStart, timelineEnd, this.props.scaleType),
+        startPosition: barUtils.calculatePosition(start, timelineStart, timelineEnd, this.props.scaleType),
       };
+
+      // use entry card placement props if specified, fallback on parent (this) props by default
+      if (this.props.entryPosition === propDefinitions.entryPosition.alternate.id) {
+        const validEntryPositions = propDefinitions.orientation[this.props.orientation].entryPositions;
+        entry.entryPosition = validEntryPositions[index % validEntryPositions.length];
+        console.log(entry.entryPosition);
+      } else {
+        entry.entryPosition = entry.entryPosition || this.props.entryPosition;
+      }
+      entry.entryOffset = entry.entryOffset || this.props.entryOffset;
+      // eslint-enable no-param-reassign
     });
 
     return preProcessedData;
   }
 
-  // get the position of a point as a percentage of the full timeline length
-  calculatePosition(point, timelineStart, timelineEnd) {
-    if (this.props.scaleType === propDefinitions.scaleType.linear) {
-      const timeFromStart = point - timelineStart;
-      const totalTime = timelineEnd - timelineStart;
-
-      return (timeFromStart / totalTime) * 100;
-    }
-
-    // todo: handle logarithmic scale
-    return 0;
-  }
-
-  // get the length of a bar as a percentage of the full timeline length
-  calculateLength(pointStart, pointEnd, timelineStart, timelineEnd) {
-    // no end point, so this will have no length (just show a point on the timeline)
-    if (!pointEnd) {
-      return 0;
-    }
-
-    const timelineLength = timelineEnd - timelineStart;
-    const barLength = pointEnd - pointStart;
-
-    return (barLength / timelineLength) * 100;
-  }
-
   render() {
     return (
-      <div className={`scaled-timeline-container ${propDefinitions.orientation[this.props.orientation]} ${this.state.className}`}>
+      <div className={`scaled-timeline-container ${this.state.orientation.className} ${this.state.className}`}>
         <div className="scaled-timeline">
           {this.state.dataEntries.map((entry) => (
             <ScaledTimelineEntry
               data={entry.data}
-              key={entry.reactKey}
+              key={entry.renderKey}
               barRenderConfig={entry.barRenderConfig}
-              orientation={this.props.orientation}
-              renderer={entry.renderer || this.props.defaultRenderer}
+              orientation={this.state.orientation}
+              entryPosition={entry.entryPosition}
+              entryOffset={entry.entryOffset}
+              renderer={this.props.entryRenderer}
             />
           ))}
         </div>
@@ -123,7 +106,9 @@ ScaledTimeline.propTypes = {
   timelineData: PropTypes.array.isRequired,
   className: PropTypes.string,
   colorCycle: PropTypes.arrayOf(PropTypes.string),
-  defaultRenderer: PropTypes.func,
+  entryOffset: PropTypes.string,
+  entryPosition: PropTypes.oneOf(Object.keys(propDefinitions.entryPosition)),
+  entryRenderer: PropTypes.func,
   orientation: PropTypes.oneOf(Object.keys(propDefinitions.orientation)),
   scaleType: PropTypes.oneOf(Object.keys(propDefinitions.scaleType)),
 };
@@ -131,8 +116,10 @@ ScaledTimeline.propTypes = {
 ScaledTimeline.defaultProps = {
   className: '',
   colorCycle: propDefinitions.defaultColorCycle,
-  defaultRenderer: ScaledTimelineEntry.defaultRenderer,
-  orientation: propDefinitions.orientation.vertical,
+  entryOffset: '1rem',
+  entryPosition: propDefinitions.entryPosition.alternate.id,
+  entryRenderer: ScaledTimelineEntry.defaultRenderer,
+  orientation: propDefinitions.orientation.vertical.id,
   scaleType: propDefinitions.scaleType.linear,
 };
 

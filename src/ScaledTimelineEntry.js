@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class ScaledTimelineElement extends Component {
+class ScaledTimelineEntry extends Component {
   static defaultRenderer(data) {
-    return data.title;
+    return (
+      <div className="scaled-timeline-default-entry-card">
+        {data.toString()}
+      </div>
+    );
   }
 
   constructor(props) {
@@ -13,10 +17,19 @@ class ScaledTimelineElement extends Component {
   }
 
   getBarStyle() {
+    const { barProperties } = this.props.orientation;
     return {
       background: this.props.barRenderConfig.color,
-      bottom: `${this.props.barRenderConfig.startPosition}%`,
-      height: `${this.props.barRenderConfig.length}%`,
+      [barProperties.startPosition]: `${this.props.barRenderConfig.startPosition}%`,
+      [barProperties.length]: `${this.props.barRenderConfig.length}%`,
+      [barProperties.alignSide1]: 0,
+      [barProperties.alignSide2]: 0,
+    };
+  }
+
+  getEntryCardPosition() {
+    return {
+      [this.props.entryPosition.offsetProperty]: `calc(100% + ${this.props.entryOffset})`,
     };
   }
 
@@ -26,23 +39,28 @@ class ScaledTimelineElement extends Component {
         className={`scaled-timeline-entry ${this.props.className}`}
         style={this.getBarStyle()}
       >
-        <div className="scaled-timeline-entry-details">
-          {this.props.renderer(this.props.data)}
+        <div className="scaled-timeline-entry-details-anchor">
+          <div className="scaled-timeline-entry-details" style={this.getEntryCardPosition()}>
+            {this.props.renderer(this.props.data)}
+          </div>
         </div>
       </div>
     );
   }
 }
 
-ScaledTimelineElement.propTypes = {
+ScaledTimelineEntry.propTypes = {
   barRenderConfig: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
+  orientation: PropTypes.object.isRequired,
+  entryPosition: PropTypes.object.isRequired,
+  entryOffset: PropTypes.string.isRequired,
   renderer: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
-ScaledTimelineElement.defaultProps = {
+ScaledTimelineEntry.defaultProps = {
   className: '',
 };
 
-export default ScaledTimelineElement;
+export default ScaledTimelineEntry;

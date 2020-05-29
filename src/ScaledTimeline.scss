@@ -2,6 +2,47 @@ $default-length: 45rem;
 $default-width: 1.5rem;
 
 .scaled-timeline-container {
+  &.vertical {
+    height: $default-length;
+    width: $default-width;    
+  }
+
+  &.horizontal {
+    height: $default-width;
+    width: $default-length;
+  }
+
+  .scaled-timeline {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid white;
+    
+    .scaled-timeline-entry {
+      position: absolute;
+      background: inherit;
+      
+      .scaled-timeline-entry-details-anchor {
+        position: relative;
+        background: inherit;
+        
+        .scaled-timeline-entry-details {
+          position: absolute;
+          background: inherit;
+
+          .scaled-timeline-default-entry-card {
+            margin: 1rem;
+          }
+        }
+      }
+    }
+  }
+  
+}
+
+
+/*
+.scaled-timeline-container {
   display: flex;
 
   &.vertical {
@@ -42,3 +83,4 @@ $default-width: 1.5rem;
     }
   }
 }
+*/
