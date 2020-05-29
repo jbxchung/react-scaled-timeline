@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import * as propDefinitions from './constants/propDefinitions';
 import * as barUtils from './utils/barUtils';
+import hashCode from './utils/hashCode';
 
 import './ScaledTimeline.scss';
 import ScaledTimelineEntry from './ScaledTimelineEntry';
@@ -19,15 +20,6 @@ class ScaledTimeline extends Component {
     };
 
     this.preProcess = this.preProcess.bind(this);
-  }
-
-  hash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i += 1) {
-      hash = ((hash << 5) - hash) + str.charCodeAt(i);
-      hash |= 0; // eslint-disable-line no-bitwise
-    }
-    return hash;
   }
 
   preProcess(data) {
@@ -50,7 +42,7 @@ class ScaledTimeline extends Component {
 
       const entry = {
         data: dataEntry,
-        renderKey: this.hash(JSON.stringify(dataEntry)),
+        renderKey: hashCode(JSON.stringify(dataEntry)),
       };
 
       preProcessedData.push(entry);
