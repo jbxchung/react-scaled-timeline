@@ -30,6 +30,7 @@ export const orientation = {
       startPosition: 'left',
       alignSide1: 'top',
       alignSide2: 'bottom',
+      pointTransformDimension: 'translateY',
     },
     entryPositions: [
       entryPosition.top,
@@ -44,6 +45,7 @@ export const orientation = {
       startPosition: 'right',
       alignSide1: 'top',
       alignSide2: 'bottom',
+      pointTransformDimension: 'translateY',
     },
     entryPositions: [
       entryPosition.top,
@@ -58,6 +60,7 @@ export const orientation = {
       startPosition: 'bottom',
       alignSide1: 'left',
       alignSide2: 'right',
+      pointTransformDimension: 'translateX',
     },
     entryPositions: [
       entryPosition.left,
@@ -72,6 +75,7 @@ export const orientation = {
       startPosition: 'top',
       alignSide1: 'left',
       alignSide2: 'right',
+      pointTransformDimension: 'translateX',
     },
     entryPositions: [
       entryPosition.left,
@@ -96,3 +100,5 @@ export const defaultColorCycle = [
   'ffc6ff',
   'fffffc',
 ];
+
+export const defaultEntryOffset = '1rem';

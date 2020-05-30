@@ -18,10 +18,11 @@ class ScaledTimelineEntry extends Component {
 
   getBarStyle() {
     const { barProperties } = this.props.orientation;
+
     return {
       background: this.props.barRenderConfig.color,
       [barProperties.startPosition]: `${this.props.barRenderConfig.startPosition}%`,
-      [barProperties.length]: `${this.props.barRenderConfig.length}%`,
+      [barProperties.length]: this.props.barRenderConfig.length === 0 ? '1px' : `${this.props.barRenderConfig.length}%`,
       [barProperties.alignSide1]: 0,
       [barProperties.alignSide2]: 0,
     };
@@ -41,7 +42,7 @@ class ScaledTimelineEntry extends Component {
       >
         <div className="scaled-timeline-entry-details-anchor">
           <div className="scaled-timeline-entry-details" style={this.getEntryCardPosition()}>
-            {this.props.renderer(this.props.data)}
+            {this.props.renderer(this.props.dataEntry)}
           </div>
         </div>
       </div>
@@ -51,10 +52,10 @@ class ScaledTimelineEntry extends Component {
 
 ScaledTimelineEntry.propTypes = {
   barRenderConfig: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired,
-  orientation: PropTypes.object.isRequired,
+  dataEntry: PropTypes.any.isRequired,
   entryPosition: PropTypes.object.isRequired,
   entryOffset: PropTypes.string.isRequired,
+  orientation: PropTypes.object.isRequired,
   renderer: PropTypes.func.isRequired,
   className: PropTypes.string,
 };

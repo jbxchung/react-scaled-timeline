@@ -41,7 +41,7 @@ class ScaledTimeline extends Component {
       timelineEnd = Math.max(timelineEnd, dataEntry.dateRange.end || timelineEnd);
 
       const entry = {
-        data: dataEntry,
+        ...dataEntry,
         renderKey: hashCode(JSON.stringify(dataEntry)),
       };
 
@@ -50,7 +50,7 @@ class ScaledTimeline extends Component {
 
     // calculate the position and length of the bar in percentages, and assign a color
     preProcessedData.forEach((entry, index) => {
-      const { start, end } = entry.data.dateRange;
+      const { start, end } = entry.dateRange;
       /* eslint-disable no-param-reassign */
       entry.barRenderConfig = {
         color: this.props.colorCycle[index % this.props.colorCycle.length],
@@ -62,7 +62,6 @@ class ScaledTimeline extends Component {
       if (this.props.entryPosition === propDefinitions.entryPosition.alternate.id) {
         const validEntryPositions = propDefinitions.orientation[this.props.orientation].entryPositions;
         entry.entryPosition = validEntryPositions[index % validEntryPositions.length];
-        console.log(entry.entryPosition);
       } else {
         entry.entryPosition = entry.entryPosition || this.props.entryPosition;
       }
@@ -79,13 +78,13 @@ class ScaledTimeline extends Component {
         <div className="scaled-timeline">
           {this.state.dataEntries.map((entry) => (
             <ScaledTimelineEntry
-              data={entry.data}
-              key={entry.renderKey}
+              dataEntry={entry}
               barRenderConfig={entry.barRenderConfig}
-              orientation={this.state.orientation}
               entryPosition={entry.entryPosition}
               entryOffset={entry.entryOffset}
-              renderer={this.props.entryRenderer}
+              key={entry.renderKey}
+              orientation={this.state.orientation}
+              renderer={entry.renderer || this.props.entryRenderer}
             />
           ))}
         </div>
@@ -108,7 +107,7 @@ ScaledTimeline.propTypes = {
 ScaledTimeline.defaultProps = {
   className: '',
   colorCycle: propDefinitions.defaultColorCycle,
-  entryOffset: '1rem',
+  entryOffset: propDefinitions.defaultEntryOffset,
   entryPosition: propDefinitions.entryPosition.alternate.id,
   entryRenderer: ScaledTimelineEntry.defaultRenderer,
   orientation: propDefinitions.orientation.vertical.id,
