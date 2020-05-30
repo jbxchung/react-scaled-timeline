@@ -61,9 +61,11 @@ class ScaledTimeline extends Component {
       // use entry card placement props if specified, fallback on parent (this) props by default
       if (this.props.entryPosition === propDefinitions.entryPosition.alternate.id) {
         const validEntryPositions = propDefinitions.orientation[this.props.orientation].entryPositions;
-        entry.entryPosition = validEntryPositions[index % validEntryPositions.length];
+        const entryIndex = this.props.reverseAlternation ? index + 1 : index;
+        entry.entryPosition = validEntryPositions[entryIndex % validEntryPositions.length];
       } else {
-        entry.entryPosition = entry.entryPosition || this.props.entryPosition;
+        const entryPositionKey = entry.entryPosition || this.props.entryPosition;
+        entry.entryPosition = propDefinitions.entryPosition[entryPositionKey];
       }
       entry.entryOffset = entry.entryOffset || this.props.entryOffset;
       // eslint-enable no-param-reassign
@@ -101,6 +103,7 @@ ScaledTimeline.propTypes = {
   entryPosition: PropTypes.oneOf(Object.keys(propDefinitions.entryPosition)),
   entryRenderer: PropTypes.func,
   orientation: PropTypes.oneOf(Object.keys(propDefinitions.orientation)),
+  reverseAlternation: PropTypes.bool,
   scaleType: PropTypes.oneOf(Object.keys(propDefinitions.scaleType)),
 };
 
@@ -111,6 +114,7 @@ ScaledTimeline.defaultProps = {
   entryPosition: propDefinitions.entryPosition.alternate.id,
   entryRenderer: ScaledTimelineEntry.defaultRenderer,
   orientation: propDefinitions.orientation.vertical.id,
+  reverseAlternation: false,
   scaleType: propDefinitions.scaleType.linear,
 };
 
