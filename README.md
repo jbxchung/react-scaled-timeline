@@ -1,7 +1,7 @@
 # react-scaled-timeline
 React component to generate a responsive vertical event timeline
 
-![example screenshot]()
+![example screenshot](https://raw.githubusercontent.com/jbxchung/react-scaled-timeline/master/example_screenshot.png)
 
 
 ## Features
