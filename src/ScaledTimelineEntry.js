@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class ScaledTimelineEntry extends Component {
-  static defaultRenderer(data) {
+  static defaultRenderer(dataEntry) {
     return (
       <div className="scaled-timeline-default-entry-card">
-        {data.toString()}
+        {dataEntry.data.toString()}
       </div>
     );
   }

@@ -92,7 +92,7 @@ export const scaleType = {
 export const defaultColorCycle = [
   '#ffadad',
   '#ffd6a5',
-  '#ffdffb6',
+  '#fdffb6',
   '#caffbf',
   '#9bf6ff',
   'a0c4ff',
