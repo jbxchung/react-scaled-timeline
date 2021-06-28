@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
-  "author": "",
+  "author": "jbxchung",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -46,5 +46,17 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbxchung/react-scaled-timeline.git"
+  },
+  "keywords": [
+    "react",
+    "timeline"
+  ],
+  "bugs": {
+    "url": "https://github.com/jbxchung/react-scaled-timeline/issues"
+  },
+  "homepage": "https://github.com/jbxchung/react-scaled-timeline#readme"
 }
