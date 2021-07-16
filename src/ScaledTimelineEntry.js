@@ -39,6 +39,7 @@ class ScaledTimelineEntry extends Component {
     return (
       <div
         className={`scaled-timeline-entry ${className} ${displayMode}`}
+        ref={this.props.forwardedRef}
         style={this.getBarStyle()}
       >
         <div className="scaled-timeline-entry-details-anchor">
@@ -58,6 +59,7 @@ ScaledTimelineEntry.propTypes = {
   entryPosition: PropTypes.object.isRequired,
   entryOffset: PropTypes.string.isRequired,
   orientation: PropTypes.object.isRequired,
+  forwardedRef: PropTypes.object.isRequired,
   renderer: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
@@ -66,4 +68,7 @@ ScaledTimelineEntry.defaultProps = {
   className: '',
 };
 
-export default ScaledTimelineEntry;
+export default React.forwardRef((props, ref) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <ScaledTimelineEntry {...props} forwardedRef={ref} />
+));

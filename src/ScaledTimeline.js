@@ -1,5 +1,8 @@
+/* eslint-disable no-plusplus */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { debounce } from 'debounce';
 
 import * as propDefinitions from './constants/propDefinitions';
 import * as barUtils from './utils/barUtils';
@@ -17,9 +20,24 @@ class ScaledTimeline extends Component {
       dataEntries: this.preProcess(this.props.timelineData),
       // props.orientation is the key, set state.orientation to the object itself
       orientation: propDefinitions.orientation[this.props.orientation],
+      overflowStyle: { height: '100%' },
     };
 
+    this.entryRefs = [];
+    this.state.dataEntries.forEach((d, i) => {
+      this.entryRefs[i] = React.createRef();
+    });
+
     this.preProcess = this.preProcess.bind(this);
+    this.handleEntryCollision = debounce(this.handleEntryCollision.bind(this), 10);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleEntryCollision);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleEntryCollision);
   }
 
   preProcess(data) {
@@ -74,12 +92,43 @@ class ScaledTimeline extends Component {
     return preProcessedData;
   }
 
+  handleEntryCollision() {
+    // only matters for inline mode
+    if (this.props.displayMode === 'popout') {
+      return;
+    }
+
+    const overflowStyle = { ...this.state.overflowStyle };
+    // check each that each entry is not overflowing
+    for (let i = 0; i < this.entryRefs.length - 1; i++) {
+      const thisEntryDiv = this.entryRefs[i].current;
+      if (!thisEntryDiv) {
+        // not rendered yet
+        return;
+      }
+      const nextEntryDiv = this.entryRefs[i + 1].current;
+
+      const thisEntryBottom = thisEntryDiv.offsetTop + thisEntryDiv.scrollHeight;
+      if (thisEntryBottom > nextEntryDiv.offsetTop) {
+        const currentTimelineHeightPercent = Number.parseInt(overflowStyle.height, 10);
+
+        this.setState({
+          overflowStyle: {
+            height: `${currentTimelineHeightPercent + 1}%`,
+          },
+        });
+        break;
+      }
+    }
+  }
+
   render() {
-    console.log(this.props.displayMode);
+    this.handleEntryCollision();
+
     return (
       <div className={`scaled-timeline-container ${this.state.orientation.className} ${this.state.className} ${this.props.displayMode}`}>
-        <div className="scaled-timeline">
-          {this.state.dataEntries.map((entry) => (
+        <div className="scaled-timeline" style={this.state.overflowStyle}>
+          {this.state.dataEntries.map((entry, index) => (
             <ScaledTimelineEntry
               barRenderConfig={entry.barRenderConfig}
               dataEntry={entry}
@@ -88,6 +137,7 @@ class ScaledTimeline extends Component {
               entryOffset={entry.entryOffset}
               key={entry.renderKey}
               orientation={this.state.orientation}
+              ref={this.entryRefs[index]}
               renderer={entry.renderer || this.props.entryRenderer}
             />
           ))}
