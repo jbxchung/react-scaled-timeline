@@ -88,12 +88,13 @@ This is the component that creates the scaled timeline.
 | ----------------------- | ------ | ---------------------------------------------------------- | ----------------------- |
 | timelineData *REQUIRED* | array  | array of TimelineData objects                              | N/A                     |
 | className               | string | Additional css class name(s) of the timeline container     | N/A                     |
+| displayMode              | string  | global setting to show event cards inside or outside of the timeline (`inline', 'popout') | `'inline'` |
 | colorCycle              | array  | array of colors for the timeline segments to cycle through | ```['#ffadad','#ffd6a5','#fdffb6','#caffbf','#9bf6ff','a0c4ff','bdb2ff','ffc6ff','fffffc']``` |
-| entryOffset             | string | global setting for the space between the event cards and their respective bars on the timeline | `'1rem'` |
-| entryPosition           | string | global setting which side of the timeline event cards will be placed (`left`, `right`, `top`, `bottom`, `alternate`) - `'alternate'` will switch between left/right for a vertical orientation, and top/bottom for a horizontal orientation | `'alternate'` |
+| entryOffset             | string | `popout` display mode only - space between the event cards and their respective bars on the timeline | `'1rem'` |
+| entryPosition           | string |`popout` display mode only -  global setting which side of the timeline event cards will be placed (`left`, `right`, `top`, `bottom`, `alternate`) - `'alternate'` will switch between left/right for a vertical orientation, and top/bottom for a horizontal orientation | `'alternate'` |
 | entryRenderer           | function | optional custom default renderer for the event cards | N/A |
 | orientation             | string | orientation of the timeline (vertical, horizontal, vertical-reversed, horizontal-reversed) | `'vertical'` |
-| reverseAlternation      | bool   | only applies if entryPosition is set to 'alternate' - will start with the opposite alternation | `false` |
+| reverseAlternation      | bool   | `popout` display mode and 'alternate' entryPosition only - will start with the opposite alternation | `false` |
 | scaleType               | string | specify the scaling of the timeline (`linear`, `logarithmic`*) | `'linear'` |
 
 *The `logarithmic` scaleType is not yet implemented.

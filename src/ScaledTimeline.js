@@ -75,13 +75,15 @@ class ScaledTimeline extends Component {
   }
 
   render() {
+    console.log(this.props.displayMode);
     return (
-      <div className={`scaled-timeline-container ${this.state.orientation.className} ${this.state.className}`}>
+      <div className={`scaled-timeline-container ${this.state.orientation.className} ${this.state.className} ${this.props.displayMode}`}>
         <div className="scaled-timeline">
           {this.state.dataEntries.map((entry) => (
             <ScaledTimelineEntry
-              dataEntry={entry}
               barRenderConfig={entry.barRenderConfig}
+              dataEntry={entry}
+              displayMode={this.props.displayMode}
               entryPosition={entry.entryPosition}
               entryOffset={entry.entryOffset}
               key={entry.renderKey}
@@ -99,6 +101,7 @@ ScaledTimeline.propTypes = {
   timelineData: PropTypes.array.isRequired,
   className: PropTypes.string,
   colorCycle: PropTypes.arrayOf(PropTypes.string),
+  displayMode: PropTypes.oneOf(Object.keys(propDefinitions.displayMode)),
   entryOffset: PropTypes.string,
   entryPosition: PropTypes.oneOf(Object.keys(propDefinitions.entryPosition)),
   entryRenderer: PropTypes.func,
@@ -110,6 +113,7 @@ ScaledTimeline.propTypes = {
 ScaledTimeline.defaultProps = {
   className: '',
   colorCycle: propDefinitions.defaultColorCycle,
+  displayMode: propDefinitions.displayMode.inline.id,
   entryOffset: propDefinitions.defaultEntryOffset,
   entryPosition: propDefinitions.entryPosition.alternate.id,
   entryRenderer: ScaledTimelineEntry.defaultRenderer,

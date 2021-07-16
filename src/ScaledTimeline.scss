@@ -4,12 +4,20 @@ $default-width: 1.5rem;
 .scaled-timeline-container {
   &.vertical {
     height: $default-length;
-    width: $default-width;    
+    width: $default-width;
+
+    &.inline {
+      width: unset;
+    }
   }
 
   &.horizontal {
     height: $default-width;
     width: $default-length;
+
+    &.inline {
+      height: unset;
+    }
   }
 
   .scaled-timeline {
@@ -31,6 +39,10 @@ $default-width: 1.5rem;
         .scaled-timeline-entry-details {
           position: absolute;
           background: inherit;
+
+          &.inline {
+            position: relative;
+          }
 
           .scaled-timeline-default-entry-card {
             margin: 1rem;

@@ -1,3 +1,11 @@
+export const displayMode = {
+  inline: {
+    id: 'inline',
+  },
+  popout: {
+    id: 'popout',
+  },
+};
 
 export const entryPosition = {
   alternate: {
